@@ -28,34 +28,41 @@ describe("Lottery", () => {
     assert.ok(lottery.methods.enterLottery().send({from: accounts[0], value: 1000000000000000000}))
   });
 
+    // assert that the user can't enter the lottery if the value of ether send is not enough
+    it('can not enter the lottery if the value of ether send is not enough', async () => {
+      try {
+        await lottery.methods.enterLottery().send({from: accounts[0], value: 100})
+        // if the above line does not throw an errror then the test fail
+        assert(false)
+      } catch (error) {
+        // if an error is throwen , the test is successfull
+        assert.ok(error)
+      }
+      
+   
+    });
+
   // assert that the manager can choose a winner
   it('pick a winner', async () => {
-    console.log("🚀 ~ file: Lottery.test.js ~ line 36 ~ it ~ accounts[0]", accounts)
-    console.log( "before : manager account",await web3.eth.getBalance(accounts[0]))
+    // console.log("🚀 ~ file: Lottery.test.js ~ line 36 ~ it ~ accounts[0]", accounts)
+    // console.log( "before : manager account",await web3.eth.getBalance(accounts[0]))
 
-    console.log( "before",await web3.eth.getBalance(accounts[4]))
-    console.log( "before",await web3.eth.getBalance(accounts[2]))
+    // console.log( "before",await web3.eth.getBalance(accounts[4]))
+    // console.log( "before",await web3.eth.getBalance(accounts[2]))
 
-    console.log( "before",await web3.eth.getBalance(accounts[1]))
+    // console.log( "before",await web3.eth.getBalance(accounts[1]))
 
     assert.ok(lottery.methods.enterLottery().send({from: accounts[4], value: 1000000000000000000}))
     assert.ok(lottery.methods.enterLottery().send({from: accounts[2], value: 1000000000000000000}))
     assert.ok(lottery.methods.enterLottery().send({from: accounts[1], value: 1000000000000000000}))
+    const transaction = await lottery.methods.chooseRandomWinner().send({from: accounts[0]});
+    assert.strictEqual(transaction.status, true);
+    // console.log("🚀 ~ file: Lottery.test.js ~ line 35 ~ it ~ transaction", transaction);
+    // console.log( "after : manager account",await web3.eth.getBalance(accounts[0]))
 
-    const winnerAddr = await lottery.methods.chooseRandomWinner().send({from: accounts[0]});
-    console.log("🚀 ~ file: Lottery.test.js ~ line 35 ~ it ~ winnerAddr", winnerAddr)
-    console.log( "after : manager account",await web3.eth.getBalance(accounts[0]))
-
-    console.log( "after",await web3.eth.getBalance(accounts[4]))
-    console.log( "after",await web3.eth.getBalance(accounts[2]))
-    console.log( "after",await web3.eth.getBalance(accounts[1]))
+    // console.log( "after",await web3.eth.getBalance(accounts[4]))
+    // console.log( "after",await web3.eth.getBalance(accounts[2]))
+    // console.log( "after",await web3.eth.getBalance(accounts[1]))
 
   });
-
-  // assert that the setter methode change the  value of the instance variable
-  // it('setter methode change the  value of the instance variable',async () => {
-  //   await inbox.methods.setMessage('New Message').send({from:accounts[0]});
-  //   const message = await inbox.methods.message().call();
-  //   assert.strictEqual(message,'New Message');
-  // });
 });

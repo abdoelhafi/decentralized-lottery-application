@@ -14,17 +14,14 @@ async function deploy(){
     accounts = await web3.eth.getAccounts();
 
     // creat and deploy a new contract to the network
-    // console.log('start')
     try {
-        console.log('start')
+        console.log('start deployement')
         const contract = await new web3.eth.Contract(abi)
-        .deploy({data: bytecode.object, arguments:['Hi there!']})
+        .deploy({data: bytecode.object})
         .send({ from: accounts[0], gas: '0xF4240', gasPrice: '0x4A817C800'})
-        console.log(contract)
+        
     } catch (error) {
         console.log(error)
     }
-   
-
 }
 deploy();
