@@ -19,7 +19,7 @@ async function deploy(){
         const contract = await new web3.eth.Contract(abi)
         .deploy({data: bytecode.object})
         .send({ from: accounts[0], gas: '0xF4240', gasPrice: '0x4A817C800'})
-        
+        console.log(abi, contract.options.address)
     } catch (error) {
         console.log(error)
     }
